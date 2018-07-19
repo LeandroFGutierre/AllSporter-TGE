@@ -8,6 +8,29 @@ import referralManagerJson from './build/contracts/ReferralManager.json';
 import allocatorJson from './build/contracts/Allocator.json';
 import airdropperJson from './build/contracts/Airdropper.json';
 
+const durationInit = function(web3) {
+  return {
+    seconds (val) {
+      return (new web3.utils.BN(val)); 
+    },
+    minutes (val) {
+      return (new web3.utils.BN(val)).mul(this.seconds(60)); 
+    },
+    hours (val) {
+      return (new web3.utils.BN(val)).mul(this.minutes(60)); 
+    },
+    days (val) {
+      return (new web3.utils.BN(val)).mul(this.hours(24)); 
+    },
+    weeks (val) {
+      return (new web3.utils.BN(val)).mul(this.days(7)); 
+    },
+    years (val) {
+      return (new web3.utils.BN(val)).mul(this.days(365)); 
+    }
+  };
+};
+
 const createWeb3 = (Web3, numberOfAccounts = 10) => {
   const web3 = new Web3();
   const Ganache = require('ganache-core');
@@ -76,6 +99,7 @@ const sendTransaction = async (method, name, to, value = 0) => {
     [from] = await web3.eth.getAccounts();
     console.log('Using ganache');
   }
+  const duration = durationInit(web3);
 
   const allSporterCoinContract = await deployContract(allSporterCoinJson, [], 'AllSporterCoin');
 
@@ -103,16 +127,29 @@ const sendTransaction = async (method, name, to, value = 0) => {
   const allocatorContract = await deployContract(allocatorJson, [tgeContract.options.address], 'Allocator');
   const airdropperContract = await deployContract(airdropperJson, [tgeContract.options.address], 'Airdropper');
 
-  const initializeMethod = tgeContract.methods.initialize(
+  const stateLengths = [
+    duration.days(5),
+    duration.days(5),
+    duration.days(3),
+    duration.days(5),
+    duration.days(5),
+    duration.days(5),
+    duration.days(5),
+    duration.days(5),
+    duration.days(5)
+  ];
+
+  const setupMethod = tgeContract.methods.setup(
     crowdsaleContract.options.address,
     kycContract.options.address,
     referralManagerContract.options.address,
     allocatorContract.options.address,
     airdropperContract.options.address,
     1577840461, // sale start time 
-    10000000000000000000 // single state ether cap
+    10000000000000000000, // single state ether cap
+    stateLengths
   );
-  await sendTransaction(initializeMethod, 'Initialize', tgeContract.options.address);
+  await sendTransaction(setupMethod, 'setup', tgeContract.options.address);
 
   console.log(`
 export const constants = {  
