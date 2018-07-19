@@ -25,6 +25,8 @@ contract Tge is Minter {
     /* --- EVENTS --- */
 
     event StateChanged(uint from, uint to);
+    event PrivateIcoInitialized(uint _cap, uint _tokensForEther, uint _startTime, uint _endTime, uint _minimumContribution);
+    event PrivateIcoFinalized();
 
     /* --- FIELDS --- */
 
@@ -182,6 +184,7 @@ contract Tge is Minter {
         privateIcoEndTime = _endTime;
         privateIcoMinimumContribution = _minimumContribution;
         privateIcoFinalized = false;
+        emit PrivateIcoInitialized(_cap, _tokensForEther, _startTime, _endTime, _minimumContribution);
     }
 
     function finalizePrivateIco() external onlyOwner {
@@ -192,6 +195,7 @@ contract Tge is Minter {
 
         privateIcoFinalized = true;
         confirmedSaleEther = 0;
+        emit PrivateIcoFinalized();
     }
 
     /* --- INTERNAL METHODS --- */
