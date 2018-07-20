@@ -1,12 +1,12 @@
 /* eslint-disable import/first */
 import Web3 from 'web3';
-import allSporterCoinJson from './build/contracts/AllSporterCoin.json';
-import tgeJson from './build/contracts/Tge.json';
-import crowdsaleJson from './build/contracts/Crowdsale.json';
-import deferredKycJson from './build/contracts/DeferredKyc.json';
-import referralManagerJson from './build/contracts/ReferralManager.json';
-import allocatorJson from './build/contracts/Allocator.json';
-import airdropperJson from './build/contracts/Airdropper.json';
+import allSporterCoinJson from '../build/contracts/AllSporterCoin.json';
+import tgeJson from '../build/contracts/Tge.json';
+import crowdsaleJson from '../build/contracts/Crowdsale.json';
+import deferredKycJson from '../build/contracts/DeferredKyc.json';
+import referralManagerJson from '../build/contracts/ReferralManager.json';
+import allocatorJson from '../build/contracts/Allocator.json';
+import airdropperJson from '../build/contracts/Airdropper.json';
 
 const durationInit = function(web3) {
   return {
@@ -88,13 +88,18 @@ const sendTransaction = async (method, name, to, value = 0) => {
 };
 
 (async () => {
-  if (process.env.PRIVATE_KEY) {
+  if (process.env.GANACHE_PORT) {
+    console.log(`Connecting to ganache server on port ${process.env.GANACHE_PORT}`);
+    web3 = new Web3(new Web3.providers.HttpProvider(`http://localhost:${process.env.GANACHE_PORT}`));
+    [from] = await web3.eth.getAccounts();
+  } else if (process.env.PRIVATE_KEY) {
     usingInfura = true;
     web3 = new Web3(new Web3.providers.HttpProvider('https://kovan.infura.io/8Mj2LsONZFcI5LKNbRiF'));
     account = web3.eth.accounts.privateKeyToAccount(process.env.PRIVATE_KEY);
     from = account.address;
     console.log(`Using infura with account: ${from}`);
   } else {
+    console.log('Using ganache core');
     web3 = createWeb3(Web3);
     [from] = await web3.eth.getAccounts();
     console.log('Using ganache');

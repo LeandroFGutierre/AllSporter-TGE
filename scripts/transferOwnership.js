@@ -1,12 +1,12 @@
 /* eslint-disable import/first */
 import Web3 from 'web3';
-import allSporterCoinJson from './build/contracts/AllSporterCoin.json';
-import tgeJson from './build/contracts/Tge.json';
-import crowdsaleJson from './build/contracts/Crowdsale.json';
-import deferredKycJson from './build/contracts/DeferredKyc.json';
-import referralManagerJson from './build/contracts/ReferralManager.json';
-import allocatorJson from './build/contracts/Allocator.json';
-import airdropperJson from './build/contracts/Airdropper.json';
+import allSporterCoinJson from '../build/contracts/AllSporterCoin.json';
+import tgeJson from '../build/contracts/Tge.json';
+import crowdsaleJson from '../build/contracts/Crowdsale.json';
+import deferredKycJson from '../build/contracts/DeferredKyc.json';
+import referralManagerJson from '../build/contracts/ReferralManager.json';
+import allocatorJson from '../build/contracts/Allocator.json';
+import airdropperJson from '../build/contracts/Airdropper.json';
 
 const contractAddresses = {
   Owner: '',
