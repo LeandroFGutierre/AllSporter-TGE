@@ -110,7 +110,7 @@ const sendTransaction = async (method, name, to, value = 0) => {
 
   const tgeArguments = [
     allSporterCoinContract.options.address,
-    100000000000000000000 // total ether cap
+    web3.utils.toWei('100000') // total ether cap
     
   ];
   const tgeContract = await deployContract(tgeJson, tgeArguments, 'Tge');
@@ -151,7 +151,7 @@ const sendTransaction = async (method, name, to, value = 0) => {
     allocatorContract.options.address,
     airdropperContract.options.address,
     1577840461, // sale start time 
-    10000000000000000000, // single state ether cap
+    web3.utils.toWei('1000'), // single state ether cap
     stateLengths
   );
   await sendTransaction(setupMethod, 'setup', tgeContract.options.address);

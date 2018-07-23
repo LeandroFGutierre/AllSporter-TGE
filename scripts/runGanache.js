@@ -1,5 +1,5 @@
 const ganacheOptions = {
-  accounts: [{balance: 1000000000000000000000, secretKey: process.env.PRIVATE_KEY}],
+  accounts: [{balance: 1000000000000000000000, secretKey: process.env.PRIVATE_KEY}, ...(new Array(10)).fill({balance: 1000000000000000000000})],
   gasLimit: 30000000,
   time: new Date()
 };
